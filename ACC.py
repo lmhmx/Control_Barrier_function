@@ -1,6 +1,7 @@
 import cvxpy as cp
 import numpy as np
 import matplotlib.pyplot as plt
+from tqdm import tqdm
 
 # Parameters
 M = 1650
@@ -85,7 +86,7 @@ def acceleration_of_leader(t):
     return a
 
 u_function=[]
-for t in range(iteration_num-1):
+for t in tqdm(range(iteration_num-1)):
 # Cost matrix
     H_acc = 2*np.array([[1/M**2, 0],
                         [0, p_sc]])
@@ -155,5 +156,8 @@ plt.figure()
 plt.plot(T[0:iteration_num-1],np.array(u_function)/(M*10),color="blue")
 plt.xlabel("Time (s)")
 plt.ylabel("u/(Mg)")
+u_upper, u_lower = 0.25, -0.25
+plt.plot(T, 0*T + u_upper, color="black",linestyle="--")
+plt.plot(T, 0*T + u_lower, color="black",linestyle="--")
 plt.axis([0,100,-1,1])
 plt.show()
